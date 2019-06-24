@@ -1,0 +1,38 @@
+{
+  "location": "japaneast",
+  "properties": {
+      "kubernetesVersion": "",
+      "enableRBAC": true,
+      "nodeResourceGroup": "{{ nodeResourceGroup }}",
+      "agentPoolProfiles": [
+          {
+              "name": "nodepool1",
+              "count": 1,
+              "vmSize": "Standard_B2s",
+              "osDiskSizeGB": 30,
+              "type": "VirtualMachineScaleSets",
+              "availabilityProfile": "VirtualMachineScaleSets",
+              "scaleSetPriority": "Low",
+              "scaleSetEvictionPolicy": "Delete",
+              "storageProfile": "ManagedDisks"
+          }
+      ],
+      "linuxProfile": {
+          "adminUsername": "azureuser",
+          "ssh": {
+              "publicKeys": [
+                  {
+                      "keyData": "{{ssh_key}}"
+                  }
+              ]
+          }
+      },
+      "networkProfile": {
+          "loadBalancerSku": "basic"
+      },
+      "servicePrincipalProfile": {
+          "clientId": "{{appId}}",
+          "secret": "{{appSecret}}"
+      }
+  }
+}

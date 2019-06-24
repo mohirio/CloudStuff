@@ -1,0 +1,12 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pvc-blobfuse-flexvol
+spec:
+  accessModes:
+    - ReadOnlyMany # Must protec
+  resources:
+    requests:
+      storage: 20Gi
+  volumeName: pv-blobfuse-flexvol
+  storageClassName: "" # Check https://kubernetes.io/docs/concepts/storage/persistent-volumes/#class-1 

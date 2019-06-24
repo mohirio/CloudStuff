@@ -1,0 +1,56 @@
+
+singleuser:
+  image:
+    name: jupyter/base-notebook
+    tag: latest
+  defaultUrl: "/lab"
+  storage:
+    type: none
+    extraVolumes:
+    - name: jupyterhub-shared
+      persistentVolumeClaim:
+        claimName: pvc-blobfuse-flexvol
+    extraVolumeMounts:
+    - name: jupyterhub-shared
+      mountPath: /home/jovyan/data
+      readOnly: true # Must protec since it's shared data
+  memory:
+    limit: 512M
+    guarantee: 512M
+  cpu:
+    limit: 0.5
+    guarantee: 0.5
+
+hub:
+  extraConfig:
+    jupyterlab: |
+      c.Spawner.cmd = ['jupyter-labhub']
+
+auth:
+  type: github
+  github:
+    clientId: ""
+    clientSecret: ""
+    callbackUrl: ""
+
+  admin:
+    access: true
+    users:
+      - admin
+  whitelist:
+    users:
+      - admin
+      - etc
+
+ingress:
+  enabled: true
+  hosts:
+    - yourdomain.com
+
+proxy:
+  secretToken: "Generate with $(openssl rand -hex 32)"
+  https:
+    hosts:
+      - yourdomain.com
+    letsencrypt:
+      contactEmail: admin@yourdomain.com
